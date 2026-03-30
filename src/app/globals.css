@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #E4002B;
+  --color-primary-hover: #C50024;
+  --color-secondary: #1A1A2E;
+  --color-navy-dark: #0f1220;
+  --color-gray-light: #F8F8F8;
+  --color-gray-mid: #E5E7EB;
+  --color-bausparen: #2563EB;
+  --color-bkv: #7C3AED;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --font-sans: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--color-gray-light);
+  color: var(--color-secondary);
+  font-family: var(--font-sans);
+}
+
+.kanban-dragging {
+  opacity: 0.8;
+  transform: rotate(2deg);
+}
