@@ -38,6 +38,36 @@ export type Tippgeber = {
   erstellt_am: string
 }
 
+export type KommunePerson = {
+  id: string
+  kommune_id: string
+  reihenfolge: number     // 1 = Hauptansprechpartner, 2–3 = optional
+  vorname: string
+  nachname: string
+  position: string | null // Funktion in der Kommune, z.B. "Bürgermeister"
+  email: string | null
+  telefon: string | null
+  erstellt_am: string
+}
+
+export type Kommune = {
+  id: string
+  name: string
+  typ: 'gemeinde' | 'stadt' | 'landkreis' | 'kommunaler_betrieb' | 'zweckverband' | 'sonstige'
+  adresse: string | null
+  stadt: string | null
+  plz: string | null
+  bundesland: string | null
+  einwohner: number | null
+  mitarbeiter: number | null
+  notizen: string | null
+  aktiv: boolean
+  erstellt_am: string
+  aktualisiert_am: string
+  // Joined
+  personen?: KommunePerson[]
+}
+
 export type Kontakt = {
   id: string
   typ: 'kommune' | 'kommunaler_betrieb' | 'person'
@@ -62,6 +92,7 @@ export type Tipp = {
   tippgeber_id: string
   geschaeftsbereich_id: string | null
   kontakt_id: string | null
+  kommune_id: string | null
   kunde_name: string | null
   kunde_telefon: string | null
   kunde_email: string | null
@@ -74,6 +105,9 @@ export type Tipp = {
   provision_betrag: number | null
   provision_bezahlt: boolean
   provision_bezahlt_am: string | null
+  naechster_termin_am: string | null
+  termin_notiz: string | null
+  wiedervorlage_am: string | null
   erstellt_am: string
   aktualisiert_am: string
   abgeschlossen_am: string | null
@@ -83,6 +117,7 @@ export type Tipp = {
   berater?: Berater
   geschaeftsbereich?: Geschaeftsbereich
   kontakt?: Kontakt
+  kommune?: Kommune
 }
 
 export type PipelinePhase = {
