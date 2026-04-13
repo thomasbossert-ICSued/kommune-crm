@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Kommune, KommunePerson } from '@/lib/supabase/types'
+import { KommunenImport } from '@/components/crm/kommunen-import'
 
 const TYP_LABELS: Record<string, string> = {
   gemeinde: 'Gemeinde',
@@ -20,6 +21,7 @@ export default function KommunenPage() {
   const [kommunen, setKommunen] = useState<(Kommune & { personen: KommunePerson[] })[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [showImport, setShowImport] = useState(false)
   const [search, setSearch] = useState('')
 
   async function load() {
@@ -47,13 +49,22 @@ export default function KommunenPage() {
           <h1 className="text-2xl font-bold text-[#1A1A2E]">Kommunen</h1>
           <p className="text-sm text-gray-400 mt-0.5">{kommunen.length} Kommunen angelegt</p>
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 rounded-lg bg-[#E4002B] px-4 py-2 text-sm font-semibold text-white hover:bg-[#C50024]"
-        >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-          Neue Kommune
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowImport(true)}
+            className="flex items-center gap-2 rounded-lg border border-[#E5E7EB] px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+            CSV importieren
+          </button>
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 rounded-lg bg-[#E4002B] px-4 py-2 text-sm font-semibold text-white hover:bg-[#C50024]"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+            Neue Kommune
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -130,7 +141,15 @@ export default function KommunenPage() {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Import Modal */}
+      {showImport && (
+        <KommunenImport
+          onClose={() => setShowImport(false)}
+          onImported={() => { setShowImport(false); load() }}
+        />
+      )}
+
+      {/* Neu-Anlegen Modal */}
       {showForm && (
         <KommuneFormModal
           onClose={() => setShowForm(false)}
